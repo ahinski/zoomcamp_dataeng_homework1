@@ -1,0 +1,8 @@
+# Ignore the data folder
+data/
+
+# Ignore the .ipynb_checkpoints folder
+.ipynb_checkpoints/
+
+# Ignore the ny_taxi_postgres_homework folder
+ny_taxi_postgres_homework/

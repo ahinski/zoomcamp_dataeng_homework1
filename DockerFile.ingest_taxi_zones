@@ -1,0 +1,8 @@
+FROM python:3.13
+
+RUN pip install pandas psycopg2 sqlalchemy
+
+WORKDIR /app
+COPY ingest_zones.py ingest_zones.py
+
+ENTRYPOINT ["python", "ingest_zones.py", "--user", "root",  "--password", "root", "--host", "pgdatabase", "--port", "5432", "--db", "ny_taxi", "--table_name", "zones", "--csv_path", "./data/taxi_zone_lookup.csv"]

@@ -1,0 +1,51 @@
+services:
+  pgdatabase:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ny_taxi
+    volumes:
+      - "./ny_taxi_postgres_homework:/var/lib/postgresql/data:rw"
+    ports:
+      - "5432:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - "8080:80"
+
+  download_data_green_tripdata:
+    build:
+      dockerfile: DockerFile.download_green_tripdata
+    volumes:
+      - ./data:/app/data
+
+  download_data_taxi_zones:
+    build:
+      context: .
+      dockerfile: DockerFile.download_taxi_zones
+    volumes:
+      - ./data:/app/data
+
+  ingest_data_green_tripdata:
+    build:
+      context: .
+      dockerfile: DockerFile.ingest_green_tripdata
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - download_data_green_tripdata
+      - pgdatabase
+
+  ingest_data_taxi_zones:
+    build:
+      context: .
+      dockerfile: DockerFile.ingest_taxi_zones
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - download_data_taxi_zones
+      - pgdatabase

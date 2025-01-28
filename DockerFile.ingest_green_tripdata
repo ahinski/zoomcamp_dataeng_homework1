@@ -1,0 +1,8 @@
+FROM python:3.13
+
+RUN pip install pandas psycopg2 sqlalchemy
+
+WORKDIR /app
+COPY ingest_tripdata.py ingest_tripdata.py
+
+ENTRYPOINT ["python", "ingest_tripdata.py", "--user", "root",  "--password", "root", "--host", "pgdatabase", "--port", "5432", "--db", "ny_taxi", "--table_name", "green_tripdata", "--csv_path", "./data/green_tripdata_2019_preprocessed.csv"]

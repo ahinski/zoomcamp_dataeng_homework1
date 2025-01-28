@@ -1,0 +1,9 @@
+FROM python:3.13
+
+RUN apt-get install wget
+RUN pip install pandas wget
+
+WORKDIR /app
+COPY download_file.py download_file.py
+
+ENTRYPOINT ["python", "download_file.py", "--url", "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/misc/taxi_zone_lookup.csv", "--csv_name", "taxi_zone_lookup", "--path", "data/"]
